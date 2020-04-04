@@ -5,7 +5,7 @@ from sklearn.model_selection import KFold
 from tensorflow import keras
 import matplotlib.pyplot as plt
 
-EPOCHS = 200
+EPOCHS = 30
 
 # class for callback function that stop training model after  reached target metric
 class MyCallback(tf.keras.callbacks.Callback):
@@ -93,13 +93,15 @@ callbacks = MyCallback()
 
 # create model
 model = keras.Sequential([
-    keras.layers.Dense(6, activation='sigmoid', input_shape=[6, ]),
-    keras.layers.Dense(8, activation='sigmoid'),
+    keras.layers.Dense(6, activation='relu', input_shape=[6, ], kernel_regularizer=keras.regularizers.l2(0.001)),
+    keras.layers.Dropout(0.3),
+    keras.layers.Dense(8, activation='relu', kernel_regularizer=keras.regularizers.l2(0.001)),
+    keras.layers.Dropout(0.3),
     keras.layers.Dense(1, activation='sigmoid')
 ])
 
 # set parameters for training
-model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['acc'])
+model.compile(optimizer='adam', loss='mean_absolute_error', metrics=['accuracy'])
 
 # learn !
 history = model.fit(titanic[predictors].to_numpy(),  titanic["Survived"].to_numpy(), epochs=EPOCHS, callbacks=[callbacks])
