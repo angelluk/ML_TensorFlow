@@ -5,7 +5,7 @@ from sklearn.model_selection import KFold
 from tensorflow import keras
 import matplotlib.pyplot as plt
 
-EPOCHS = 30
+EPOCHS = 40
 
 # class for callback function that stop training model after  reached target metric
 class MyCallback(tf.keras.callbacks.Callback):
